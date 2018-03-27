@@ -132,9 +132,8 @@
  * modulation steps of about 6% for servers with the lowest weight (1).
  */
 #define BE_WEIGHT_SCALE 16
-
-/* LB parameters for all algorithms */
-struct lbprm {
+//
+//TODO:add PI algo params
 	int algo;			/* load balancing algorithm and variants: BE_LB_* */
 	int tot_wact, tot_wbck;		/* total effective weights of active and backup servers */
 	int tot_weight;			/* total effective weight of servers participating to LB */

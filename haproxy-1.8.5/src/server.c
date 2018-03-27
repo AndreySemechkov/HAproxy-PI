@@ -10,7 +10,7 @@
  * 2 of the License, or (at your option) any later version.
  *
  */
-
+//TODO: server has cases for dynamic or static algos,check what we have to do
 #include <ctype.h>
 #include <errno.h>
 
