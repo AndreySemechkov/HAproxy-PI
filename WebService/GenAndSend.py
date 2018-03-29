@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 from random import *
-
 import requests
 
 def genRandIntsList(maxNum, missionsNum):
@@ -15,7 +15,8 @@ def httpPOST(numList):
     for num in numList:
         numDict = {}
         numDict[num] = num
-        request = requests.post(url=destURL, data=numDict)
+        #request = requests.post(url=destURL, data=numDict)
+        request = requests.get('http://192.168.56.254/cgi-bin/hello.cgi')
         print(request.text)
 
 randIntsList = genRandIntsList(10,10)
