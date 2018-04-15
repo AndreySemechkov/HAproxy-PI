@@ -669,7 +669,7 @@ struct server *findserver(const struct proxy *px, const char *name) {
 
 	return target;
 }
-
+//TODO add PI algo case here
 /* This function checks that the designated proxy has no http directives
  * enabled. It will output a warning if there are, and will fix some of them.
  * It returns the number of fatal errors encountered. This should be called

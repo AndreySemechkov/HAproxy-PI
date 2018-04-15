@@ -537,7 +537,7 @@ static struct server *get_server_rch(struct stream *s)
  * can be trusted in balance and direct modes.
  *
  */
-
+//TODO: add our PI algo next_srv call case here
 int assign_server(struct stream *s)
 {
 	struct connection *conn;
@@ -1447,6 +1447,7 @@ int be_downtime(struct proxy *px) {
 
 const char *backend_lb_algo_str(int algo) {
 //TODO: backtrace 0
+//TODO: add our PI algo here
 	if (algo == BE_LB_ALGO_RR)
 		return "roundrobin";
 	else if (algo == BE_LB_ALGO_SRR)
@@ -1486,7 +1487,7 @@ int backend_parse_balance(const char **args, char **err, struct proxy *curproxy)
 		curproxy->lbprm.algo |= BE_LB_ALGO_RR;
 		return 0;
 	}
-
+//TODO add parsing for PI
 	if (!strcmp(args[0], "roundrobin")) {
 		curproxy->lbprm.algo &= ~BE_LB_ALGO;
 		curproxy->lbprm.algo |= BE_LB_ALGO_RR;
