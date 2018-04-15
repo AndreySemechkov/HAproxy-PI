@@ -77,6 +77,7 @@
 /* All known variants of load balancing algorithms. These can be cleared using
  * the BE_LB_ALGO mask. For a check, using BE_LB_KIND is preferred.
  */
+//TODO: backtrace 1.2 - definition for PI should be written
 #define BE_LB_ALGO_NONE (BE_LB_KIND_NONE | BE_LB_NEED_NONE)    /* not defined */
 #define BE_LB_ALGO_RR   (BE_LB_KIND_RR | BE_LB_NEED_NONE)      /* round robin */
 #define BE_LB_ALGO_LC   (BE_LB_KIND_CB | BE_LB_NEED_NONE | BE_LB_CB_LC)    /* least connections */

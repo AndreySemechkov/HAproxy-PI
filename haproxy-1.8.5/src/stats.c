@@ -1765,6 +1765,7 @@ int stats_fill_be_stats(struct proxy *px, int flags, struct field *stats, int le
 	if (flags & ST_SHLGNDS) {
 		if (px->cookie_name)
 			stats[ST_F_COOKIE] = mkf_str(FO_CONFIG|FN_NAME|FS_SERVICE, px->cookie_name);
+		//TODO: backtrace 1 - usage of backend_lb_algo_str
 		stats[ST_F_ALGO] = mkf_str(FO_CONFIG|FS_SERVICE, backend_lb_algo_str(px->lbprm.algo & BE_LB_ALGO));
 	}
 
@@ -1811,7 +1812,8 @@ static int stats_dump_be_stats(struct stream_interface *si, struct proxy *px, in
 	if ((appctx->ctx.stats.flags & STAT_BOUND) && !(appctx->ctx.stats.type & (1 << STATS_TYPE_BE)))
 		return 0;
 
-	if (!stats_fill_be_stats(px, flags, stats, ST_F_TOTAL_FIELDS))
+    //TODO: backtrace 1.1 - next goto px definintion
+    if (!stats_fill_be_stats(px, flags, stats, ST_F_TOTAL_FIELDS))
 		return 0;
 
 	return stats_dump_one_line(stats, flags, px, appctx);
@@ -2109,6 +2111,7 @@ int stats_dump_proxy_to_buffer(struct stream_interface *si, struct proxy *px, st
 
 	case STAT_PX_ST_BE:
 		/* print the backend */
+        //TODO: backtrace 1.1.1 - next goto px definintion
 		if (stats_dump_be_stats(si, px, flags)) {
 			if (ci_putchk(rep, &trash) == -1) {
 				si_applet_cant_put(si);
@@ -2567,7 +2570,8 @@ static int stats_dump_stat_to_buffer(struct stream_interface *si, struct uri_aut
 			px = appctx->ctx.stats.px;
 			/* skip the disabled proxies, global frontend and non-networked ones */
 			if (px->state != PR_STSTOPPED && px->uuid > 0 && (px->cap & (PR_CAP_FE | PR_CAP_BE)))
-				if (stats_dump_proxy_to_buffer(si, px, uri) == 0)
+                //TODO: backtrace 1.1.2 - next goto px definintion
+                if (stats_dump_proxy_to_buffer(si, px, uri) == 0)
 					return 0;
 
 			appctx->ctx.stats.px = px->next;
