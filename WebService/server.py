@@ -8,7 +8,7 @@ import math
 load = sys.argv[1]
 
 def closest_prime(numOrig):
-	num = int(str(numOrig)[0:load])
+	num = int(str(numOrig)[0:int(load)])
 	for i in range(num, 1, -1):
 		isPrime = True
 		for j in range(2, int(math.ceil(math.sqrt(i)))):
