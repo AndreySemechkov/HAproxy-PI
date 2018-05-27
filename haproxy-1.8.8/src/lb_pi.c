@@ -44,7 +44,7 @@ static inline void pi_dequeue_srv(struct server *s)
  */
 static inline void pi_queue_srv(struct server *s)
 {
-    s->lb_node.key = s->served;
+    s->lb_node.key = s->served + s->nbpend;
     eb32_insert(s->lb_tree, &s->lb_node);
 }
 
@@ -224,14 +224,12 @@ static void pi_update_server_weight(struct server *srv)
     srv_lb_commit_status(srv);
 }
 
-/* This function is responsible for building the trees in case of fast
- * weighted least-conns. It also sets p->lbprm.wdiv to the eweight to
- * uweight ratio. Both active and backup groups are initialized.
+/* This function is responsible for building the trees in case of Persistent idle
+ * It also sets p->lbprm.wdiv to the eweight to uweight ratio. Both active and backup groups are initialized.
  *
- * TODO: for PI : need to add a queue of Recently Used servers.
+ * TODO:
  * This is used for when there are no idle servers and the current server getting the requests goes down.
- * Thus the server that received the requests before the current server needs to be next.
- * TODO: decide what to do with server going down the above is just my suggestion
+ * Thus the server that has the least current open http connections will be the next for new connections.
  */
 void pi_init_server_tree(struct proxy *p)
 {
@@ -272,29 +270,37 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
-
+    static struct eb32_node *last_used_node = NULL;
     srv = avoided = NULL;
 
     HA_SPIN_LOCK(LBPRM_LOCK, &p->lbprm.lock);
     if (p->srv_act)
         node = eb32_first(&p->lbprm.pi.act);
+        if(node && node->key != 0){
+            node = last_used_node;
+        }
     else if (p->lbprm.fbck) {
         srv = p->lbprm.fbck;
+        last_used_node = srv->lb_node;
         goto out;
     }
     else if (p->srv_bck)
         node = eb32_first(&p->lbprm.pi.bck);
+        if(node && node->key != 0){
+            node = last_used_node;
+        }
     else {
         srv = NULL;
         goto out;
     }
 
     while (node) {
-        /* OK, we have a server. However, it may be saturated, in which
+        /*
+        OK, we have a server. However, it may be saturated, in which
          * case we don't want to reconsider it for now, so we'll simply
          * skip it. Same if it's the server we try to avoid, in which
          * case we simply remember it for later use if needed.
-         */
+        */
         struct server *s;
         s = eb32_entry(node, struct server, lb_node);
         if (!s->maxconn || (!s->nbpend && s->served < srv_dynamic_maxconn(s))) {
@@ -309,6 +315,8 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 
     if (!srv)
         srv = avoided;
+    last_used_node = srv->lb_node;
+
     out:
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
     return srv;
