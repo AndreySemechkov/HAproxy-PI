@@ -30,6 +30,7 @@
 #include <types/lb_fwlc.h>
 #include <types/lb_fwrr.h>
 #include <types/lb_map.h>
+#include <types/lb_pi.h>
 #include <types/server.h>
 
 /* Parameters for lbprm.algo */
@@ -147,6 +148,7 @@ struct lbprm {
 	struct lb_fwlc fwlc;
 	struct lb_chash chash;
 	struct lb_fas fas;
+	struct lb_pi pi;
 	__decl_hathreads(HA_SPINLOCK_T lock);
 
 	/* Call backs for some actions. Any of them may be NULL (thus should be ignored). */
