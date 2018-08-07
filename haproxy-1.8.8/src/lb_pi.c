@@ -235,7 +235,7 @@ void pi_init_server_tree(struct proxy *p)
 {
     struct server *srv;
     struct eb_root init_head = EB_ROOT;
-
+    p->lbprm.pi.last_used_node = NULL;
     p->lbprm.set_server_status_up   = pi_set_server_status_up;
     p->lbprm.set_server_status_down = pi_set_server_status_down;
     p->lbprm.update_server_eweight  = pi_update_server_weight;
@@ -270,28 +270,29 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
+    //p->lbprm.pi.last_used_node = NULL;
+
     //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
             // add if(last_used_node==deleted_serv) last_used_node = NULL;
                     // check in all code when server dies, do last_used_node =NULL to select here the next best cadidate
 
-    static struct eb32_node *last_used_node = NULL;
     srv = avoided = NULL;
 
     HA_SPIN_LOCK(LBPRM_LOCK, &p->lbprm.lock);
     if (p->srv_act)
         node = eb32_first(&p->lbprm.pi.act);
-        if(node && node->key != 0 && last_used_node != NULL){
-            node = last_used_node;
+        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL){
+            node = p->lbprm.pi.last_used_node;
         }
     else if (p->lbprm.fbck) {
         srv = p->lbprm.fbck;
-        last_used_node = srv->lb_node;
+        p->lbprm.pi.last_used_node = &(srv->lb_node);
         goto out;
     }
     else if (p->srv_bck)
         node = eb32_first(&p->lbprm.pi.bck);
-        if(node && node->key != 0 && last_used_node != NULL){
-            node = last_used_node;
+        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL){
+            node = p->lbprm.pi.last_used_node;
         }
     else {
         srv = NULL;
@@ -320,7 +321,7 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     // if last_used_node= NULL its like last_used_node died and we take the next best candidate
     if (!srv)
         srv = avoided;
-    last_used_node = srv->lb_node;
+    p->lbprm.pi.last_used_node = &(srv->lb_node);
 
     out:
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);

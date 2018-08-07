@@ -612,6 +612,10 @@ int assign_server(struct stream *s)
 			srv = fwlc_get_next_server(s->be, prev_srv);
 			break;
 
+		case BE_LB_LKUP_PITREE:
+			srv = pi_get_next_server(s->be, prev_srv);
+			break;
+
 		case BE_LB_LKUP_CHTREE:
 		case BE_LB_LKUP_MAP:
 			if ((s->be->lbprm.algo & BE_LB_KIND) == BE_LB_KIND_RR) {
@@ -1455,6 +1459,8 @@ const char *backend_lb_algo_str(int algo) {
 		return "first";
 	else if (algo == BE_LB_ALGO_LC)
 		return "leastconn";
+	else if (algo == BE_LB_ALGO_PI)
+		return "persistent_idle";
 	else if (algo == BE_LB_ALGO_SH)
 		return "source";
 	else if (algo == BE_LB_ALGO_UH)
@@ -1490,6 +1496,10 @@ int backend_parse_balance(const char **args, char **err, struct proxy *curproxy)
 	if (!strcmp(args[0], "roundrobin")) {
 		curproxy->lbprm.algo &= ~BE_LB_ALGO;
 		curproxy->lbprm.algo |= BE_LB_ALGO_RR;
+	}
+	else if (!strcmp(args[0], "persistent-idle")) {
+		curproxy->lbprm.algo &= ~BE_LB_ALGO;
+		curproxy->lbprm.algo |= BE_LB_ALGO_PI;
 	}
 	else if (!strcmp(args[0], "static-rr")) {
 		curproxy->lbprm.algo &= ~BE_LB_ALGO;

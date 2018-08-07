@@ -248,7 +248,6 @@ struct proxy {
 	enum pr_mode mode;                      /* mode = PR_MODE_TCP, PR_MODE_HTTP or PR_MODE_HEALTH */
 	char cap;                               /* supported capabilities (PR_CAP_*) */
 	unsigned int maxconn;                   /* max # of active streams on the frontend */
-
 	int options;				/* PR_O_REDISP, PR_O_TRANSP, ... */
 	int options2;				/* PR_O2_* */
 	struct in_addr mon_net, mon_mask;	/* don't forward connections from this net (network order) FIXME: should support IPv6 */

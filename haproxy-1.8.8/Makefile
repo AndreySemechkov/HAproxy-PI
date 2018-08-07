@@ -868,7 +868,7 @@ OBJS = src/proto_http.o src/cfgparse.o src/server.o src/stream.o        \
        src/task.o src/queue.o src/applet.o src/map.o src/frontend.o     \
        src/freq_ctr.o src/lb_fwlc.o src/mux_pt.o src/auth.o src/fd.o    \
        src/hpack-dec.o src/memory.o src/lb_fwrr.o src/lb_chash.o        \
-       src/lb_fas.o src/hathreads.o src/chunk.o src/lb_map.o            \
+       src/lb_fas.o src/hathreads.o src/chunk.o src/lb_map.o src/lb_pi.o \
        src/xxhash.o src/regex.o src/shctx.o src/buffer.o src/action.o   \
        src/h1.o src/compression.o src/pipe.o src/namespace.o            \
        src/sha1.o src/hpack-tbl.o src/hpack-enc.o src/uri_auth.o        \

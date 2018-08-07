@@ -56,6 +56,7 @@
 
 /* BE_LB_CB_* is used with BE_LB_KIND_CB */
 #define BE_LB_CB_LC     0x00000  /* least-connections */
+#define BE_LB_CB_PI     0x00007  /* persistent-idle */
 #define BE_LB_CB_FAS    0x00001  /* first available server (opposite of leastconn) */
 
 #define BE_LB_PARM      0x000FF  /* mask to get/clear the LB param */
@@ -80,6 +81,7 @@
  */
 #define BE_LB_ALGO_NONE (BE_LB_KIND_NONE | BE_LB_NEED_NONE)    /* not defined */
 #define BE_LB_ALGO_RR   (BE_LB_KIND_RR | BE_LB_NEED_NONE)      /* round robin */
+#define BE_LB_ALGO_PI   BE_LB_ALGO_LC
 #define BE_LB_ALGO_LC   (BE_LB_KIND_CB | BE_LB_NEED_NONE | BE_LB_CB_LC)    /* least connections */
 #define BE_LB_ALGO_FAS  (BE_LB_KIND_CB | BE_LB_NEED_NONE | BE_LB_CB_FAS)   /* first available server */
 #define BE_LB_ALGO_SRR  (BE_LB_KIND_RR | BE_LB_NEED_NONE | BE_LB_RR_STATIC) /* static round robin */
@@ -101,6 +103,7 @@
 #define BE_LB_LKUP_CHTREE 0x40000  /* consistent hash  */
 #define BE_LB_LKUP_FSTREE 0x50000  /* FAS tree lookup */
 #define BE_LB_LKUP        0x70000  /* mask to get just the LKUP value */
+#define BE_LB_LKUP_PITREE 0x90000  /* PI tree lookup */
 
 /* additional properties */
 #define BE_LB_PROP_DYN    0x80000 /* bit to indicate a dynamic algorithm */
