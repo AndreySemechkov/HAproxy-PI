@@ -1461,7 +1461,7 @@ const char *backend_lb_algo_str(int algo) {
 	else if (algo == BE_LB_ALGO_LC)
 		return "leastconn";
 	else if (algo == BE_LB_ALGO_PI)
-		return "persistent_idle";
+		return "persistent-idle";
 	else if (algo == BE_LB_ALGO_SH)
 		return "source";
 	else if (algo == BE_LB_ALGO_UH)
