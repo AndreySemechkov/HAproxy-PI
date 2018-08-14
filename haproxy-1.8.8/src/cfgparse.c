@@ -8557,7 +8557,7 @@ out_uri_auth_compat:
 				curproxy->lbprm.algo |= BE_LB_LKUP_LCTREE | BE_LB_PROP_DYN;
 				fwlc_init_server_tree(curproxy);
 			} else if ((curproxy->lbprm.algo & BE_LB_PARM) == BE_LB_CB_PI){
-				curproxy->lbprm.algo |= BE_LB_LKUP_LCTREE | BE_LB_PROP_DYN;
+				curproxy->lbprm.algo |= BE_LB_LKUP_PITREE | BE_LB_PROP_DYN;
 				pi_init_server_tree(curproxy);
 			} else {
 				curproxy->lbprm.algo |= BE_LB_LKUP_FSTREE | BE_LB_PROP_DYN;
