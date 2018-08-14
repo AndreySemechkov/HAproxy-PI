@@ -40,6 +40,7 @@
 #include <proto/lb_fwlc.h>
 #include <proto/lb_fwrr.h>
 #include <proto/lb_map.h>
+#include <proto/lb_pi.h>
 #include <proto/log.h>
 #include <proto/mux_pt.h>
 #include <proto/obj_type.h>
