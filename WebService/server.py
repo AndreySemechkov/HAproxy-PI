@@ -42,7 +42,7 @@ class Result(object):
 								 "  Delay: " + str(self.delay()) + \
 								 "  Calc Time: " + str(self.calcTime()) + \
 								 "  Total Time: " + str(self.totalTime()) + \
-								 "         Start: " + str(self.timeS) + "     Finish: " + str(self.timeF)
+								 "         Start: " + str(self.timeS) + "     Finish: " + str(self.timeF) + "\n"
 
 	def calcTime(self):
 		if self.timeS is not None and self.timeF is not None:
@@ -113,7 +113,7 @@ class isPrime:
 		logging.debug("New queue size is: " + str(qin.qsize()))
 		logging.debug('***********************************************************************************')
 		try:
-			res = "This is Slowpoke\n" + str(qout.get(timeout=5))
+			res = "This is Usain\n" + str(qout.get(timeout=5))
 		except Queue.Empty, e:
 			res = "The result took too long to calc"
 
