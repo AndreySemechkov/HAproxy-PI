@@ -602,10 +602,10 @@ int assign_server(struct stream *s)
 		 */
 		switch (s->be->lbprm.algo & BE_LB_LKUP) {
 		case BE_LB_LKUP_RRTREE:
-
-		    srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
+            if(srv && srv->proxy)
+		        srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
             srv = fwrr_get_next_server(s->be, prev_srv);
-            if(srv)
+            if(srv && srv->proxy)
                 fprintf(srv->proxy->lbprm.pi.log, "Started backend: assign_server BE_LB_LKUP_PITREE case\n"
                                                   "server pointer: %d\n"
                                                   "num connections of srv: %d\n",
