@@ -232,8 +232,8 @@ static void pi_update_server_weight(struct server *srv)
  */
 void pi_init_server_tree(struct proxy *p)
 {
-    //p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
-    //fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
+    p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
+    fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
     struct server *srv;
     struct eb_root init_head = EB_ROOT;
     p->lbprm.pi.last_used_node = NULL;
@@ -271,7 +271,6 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
-    //p->lbprm.pi.last_used_node = NULL;
     if(!p->lbprm.pi.log)
         p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
     fprintf(p->lbprm.pi.log, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
