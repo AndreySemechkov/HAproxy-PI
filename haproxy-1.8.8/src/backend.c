@@ -614,7 +614,13 @@ int assign_server(struct stream *s)
 			break;
 
 		case BE_LB_LKUP_PITREE:
+
 			srv = pi_get_next_server(s->be, prev_srv);
+			if(srv)
+				fprintf(srv->proxy->lbprm.pi.log, "Started backend: assign_server BE_LB_LKUP_PITREE case\n"
+												"server pointer: %d\n"
+												"num connections of srv: %d\n",
+						srv,srv->cur_sess);
 			break;
 
 		case BE_LB_LKUP_CHTREE:
