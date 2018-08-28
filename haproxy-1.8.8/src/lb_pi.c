@@ -233,8 +233,9 @@ static void pi_update_server_weight(struct server *srv)
 void pi_init_server_tree(struct proxy *p)
 {
     if(p){
-        p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
-        fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
+        p->lbprm.pi.log = fopen("~/pi_log", "a");
+        if(p->lbprm.pi.log>0)
+            fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
     } else{
         printf("pi_init_server_tree p is null");
     }
