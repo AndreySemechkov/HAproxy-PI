@@ -614,7 +614,8 @@ int assign_server(struct stream *s)
 			break;
 
 		case BE_LB_LKUP_PITREE:
-
+			if(!srv->proxy->lbprm.pi.log)
+				srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
 			srv = pi_get_next_server(s->be, prev_srv);
 			if(srv)
 				fprintf(srv->proxy->lbprm.pi.log, "Started backend: assign_server BE_LB_LKUP_PITREE case\n"
