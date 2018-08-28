@@ -232,8 +232,13 @@ static void pi_update_server_weight(struct server *srv)
  */
 void pi_init_server_tree(struct proxy *p)
 {
-    p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
-    fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
+    if(p){
+        p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
+        fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
+    } else{
+        printf("pi_init_server_tree p is null");
+    }
+
     struct server *srv;
     struct eb_root init_head = EB_ROOT;
     p->lbprm.pi.last_used_node = NULL;
