@@ -232,13 +232,13 @@ static void pi_update_server_weight(struct server *srv)
  */
 void pi_init_server_tree(struct proxy *p)
 {
-    if(p){
+    /*if(p){
         p->lbprm.pi.log = fopen("~/pi_log", "a");
         if(p->lbprm.pi.log>0)
             fprintf(p->lbprm.pi.log, "Started pi_init_server_tree\n");
     } else{
         printf("pi_init_server_tree p is null");
-    }
+    }*/
 
     struct server *srv;
     struct eb_root init_head = EB_ROOT;
@@ -277,10 +277,10 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
-    if(!p->lbprm.pi.log)
+    if(p && !p->lbprm.pi.log)
         p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
     fprintf(p->lbprm.pi.log, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
-    if(p->lbprm.pi.last_used_node)
+    if(p && p->lbprm.pi.last_used_node)
         fprintf(p->lbprm.pi.log, "pi_get_next_server p->lbprm.pi.last_used_node.key = %d", p->lbprm.pi.last_used_node->key);
     //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
             // add if(last_used_node==deleted_serv) last_used_node = NULL;
