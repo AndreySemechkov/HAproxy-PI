@@ -39,6 +39,7 @@ struct fwrr_group {
 struct lb_fwrr {
 	struct fwrr_group act;	/* weighted round robin on the active servers */
 	struct fwrr_group bck;	/* weighted round robin on the backup servers */
+	FILE* log;
 };
 
 #endif /* _TYPES_LB_FWRR_H */
