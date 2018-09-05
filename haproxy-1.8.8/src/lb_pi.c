@@ -21,6 +21,7 @@
 #include <proto/backend.h>
 #include <proto/queue.h>
 
+
 /* Remove a server from a tree. It must have previously been dequeued. This
  * function is meant to be called when a server is going down or has its
  * weight disabled.
@@ -232,6 +233,7 @@ static void pi_update_server_weight(struct server *srv)
  */
 void pi_init_server_tree(struct proxy *p)
 {
+<<<<<<< HEAD
     /*if(p){
         p->lbprm.pi.log = fopen("~/pi_log", "a");
         if(p->lbprm.pi.log>0)
@@ -240,6 +242,8 @@ void pi_init_server_tree(struct proxy *p)
         printf("pi_init_server_tree p is null");
     }*/
 
+=======
+>>>>>>> parent of 0e7f750... debug prints to log added
     struct server *srv;
     struct eb_root init_head = EB_ROOT;
     p->lbprm.pi.last_used_node = NULL;
@@ -277,12 +281,17 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
+<<<<<<< HEAD
     if(p && !p->lbprm.pi.log)
         p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
 //    fprintf(p->lbprm.pi.log, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
     fprintf(stdout, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
     if(p && p->lbprm.pi.last_used_node)
         fprintf(stdout, "pi_get_next_server p->lbprm.pi.last_used_node.key = %d", p->lbprm.pi.last_used_node->key);
+=======
+    //p->lbprm.pi.last_used_node = NULL;
+
+>>>>>>> parent of 0e7f750... debug prints to log added
     //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
             // add if(last_used_node==deleted_serv) last_used_node = NULL;
                     // check in all code when server dies, do last_used_node =NULL to select here the next best cadidate
@@ -309,8 +318,12 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         srv = NULL;
         goto out;
     }
+<<<<<<< HEAD
     if(node)
         fprintf(stdout, "pi_get_next_server chosen node key = %d", node->key);
+=======
+
+>>>>>>> parent of 0e7f750... debug prints to log added
     while (node) {
         /*
         OK, we have a server. However, it may be saturated, in which
@@ -329,6 +342,7 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         }
         node = eb32_next(node);
     }
+<<<<<<< HEAD
     if(node)
         fprintf(stdout, "pi_get_next_server chosen node after saturation switch key = %d", node->key);
 //TODO  incase avoided used should last_used_node be (srv==avoided).lb_node or just NULL to avoid bug of going to avoided server with last used.
@@ -343,6 +357,13 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         fprintf(stdout, "pi_get_next_server chosen server after avoided switch srv fields:\n"
                                  "srv->cur_sess=%d"
                                  ,srv->cur_sess);
+=======
+//TODO  incase avoided used should last_used_node be (srv==avoided).lb_node or just NULL to avoid bug of going to avoided server with last used.
+    // if last_used_node= NULL its like last_used_node died and we take the next best candidate
+    if (!srv)
+        srv = avoided;
+    p->lbprm.pi.last_used_node = &(srv->lb_node);
+>>>>>>> parent of 0e7f750... debug prints to log added
 
     out:
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
