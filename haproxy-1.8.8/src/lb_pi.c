@@ -326,12 +326,6 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         node = eb32_next(node);
     }
 
-    // if last_used_node= NULL its like last_used_node died and we take the next best candidate
-    if (!srv)
-        srv = avoided;
-    p->lbprm.pi.last_used_node = &(srv->lb_node);
-
-
 //TODO  incase avoided used should last_used_node be (srv==avoided).lb_node or just NULL to avoid bug of going to avoided server with last used.
     // if last_used_node= NULL its like last_used_node died and we take the next best candidate
     if (!srv)
