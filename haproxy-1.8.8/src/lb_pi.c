@@ -279,9 +279,10 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     struct eb32_node *node;
     if(p && !p->lbprm.pi.log)
         p->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
-    fprintf(p->lbprm.pi.log, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
+//    fprintf(p->lbprm.pi.log, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
+    fprintf(stdout, "Started pi_get_next_server p->lbprm.pi.last_used_node = %d\n", p->lbprm.pi.last_used_node);
     if(p && p->lbprm.pi.last_used_node)
-        fprintf(p->lbprm.pi.log, "pi_get_next_server p->lbprm.pi.last_used_node.key = %d", p->lbprm.pi.last_used_node->key);
+        fprintf(stdout, "pi_get_next_server p->lbprm.pi.last_used_node.key = %d", p->lbprm.pi.last_used_node->key);
     //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
             // add if(last_used_node==deleted_serv) last_used_node = NULL;
                     // check in all code when server dies, do last_used_node =NULL to select here the next best cadidate
@@ -309,7 +310,7 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         goto out;
     }
     if(node)
-        fprintf(p->lbprm.pi.log, "pi_get_next_server chosen node key = %d", node->key);
+        fprintf(stdout, "pi_get_next_server chosen node key = %d", node->key);
     while (node) {
         /*
         OK, we have a server. However, it may be saturated, in which
@@ -329,17 +330,17 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         node = eb32_next(node);
     }
     if(node)
-        fprintf(p->lbprm.pi.log, "pi_get_next_server chosen node after saturation switch key = %d", node->key);
+        fprintf(stdout, "pi_get_next_server chosen node after saturation switch key = %d", node->key);
 //TODO  incase avoided used should last_used_node be (srv==avoided).lb_node or just NULL to avoid bug of going to avoided server with last used.
     // if last_used_node= NULL its like last_used_node died and we take the next best candidate
     if(srv)
-        fprintf(p->lbprm.pi.log, "pi_get_next_server chosen server before avoided switch currsess= %d", srv->cur_sess);
+        fprintf(stdout, "pi_get_next_server chosen server before avoided switch currsess= %d", srv->cur_sess);
     if (!srv)
         srv = avoided;
     p->lbprm.pi.last_used_node = &(srv->lb_node);
 
     if(srv)
-        fprintf(p->lbprm.pi.log, "pi_get_next_server chosen server after avoided switch srv fields:\n"
+        fprintf(stdout, "pi_get_next_server chosen server after avoided switch srv fields:\n"
                                  "srv->cur_sess=%d"
                                  ,srv->cur_sess);
 
