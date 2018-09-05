@@ -564,6 +564,7 @@ struct server *fwrr_get_next_server(struct proxy *p, struct server *srvtoavoid)
 		}
 	}
  out:
+	fprintf(stdout, "!!!!!!!RR end of next server!!!!!!");
 	HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
 	return srv;
 }

@@ -8551,7 +8551,6 @@ out_uri_auth_compat:
 				fwrr_init_server_groups(curproxy);
 			}
 			break;
-		fprintf(stdout, "!!!!!!!cfg parse!!!!!!");
 		case BE_LB_KIND_CB:
 			if ((curproxy->lbprm.algo & BE_LB_PARM) == BE_LB_CB_LC) {
 				curproxy->lbprm.algo |= BE_LB_LKUP_LCTREE | BE_LB_PROP_DYN;
