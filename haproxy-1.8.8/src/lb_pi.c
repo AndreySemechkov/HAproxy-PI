@@ -339,6 +339,7 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     p->lbprm.pi.last_used_node = &(srv->lb_node);
 
     out:
+    fprintf(stdout, "!!!!!!!!WE ARE HERE!!!!!!");
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
     return srv;
 }

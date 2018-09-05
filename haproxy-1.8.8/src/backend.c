@@ -624,6 +624,7 @@ int assign_server(struct stream *s)
 		case BE_LB_LKUP_PITREE:
 
 		    //srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
+			fprintf(stdout, "!!!!!!!!WE ARE HERE - case BE_LB_LKUP_PITREE:!!!!!!");
 			srv = pi_get_next_server(s->be, prev_srv);
 
 			if(srv)
