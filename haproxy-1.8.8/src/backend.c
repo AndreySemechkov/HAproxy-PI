@@ -622,7 +622,6 @@ int assign_server(struct stream *s)
 			break;
 
 		case BE_LB_LKUP_PITREE:
-<<<<<<< HEAD
 
 		    //srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
 			srv = pi_get_next_server(s->be, prev_srv);
@@ -632,9 +631,7 @@ int assign_server(struct stream *s)
 												"server pointer: %d\n"
 												"num connections of srv: %d\n",
 						srv,srv->cur_sess);
-=======
 			srv = pi_get_next_server(s->be, prev_srv);
->>>>>>> parent of 0e7f750... debug prints to log added
 			break;
 
 		case BE_LB_LKUP_CHTREE:
