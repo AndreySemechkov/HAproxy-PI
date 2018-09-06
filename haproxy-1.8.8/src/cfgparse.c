@@ -8557,6 +8557,7 @@ out_uri_auth_compat:
 				fwlc_init_server_tree(curproxy);
 			} else if ((curproxy->lbprm.algo & BE_LB_PARM) == BE_LB_CB_PI){
 				fprintf(stdout, "!!!!!!!!WE ARE HERE BE_LB_KIND_CB cfg parse!!!!!!");
+				fflush(stdout);				
 				curproxy->lbprm.algo |= BE_LB_LKUP_PITREE | BE_LB_PROP_DYN;
 				pi_init_server_tree(curproxy);
 			} else {

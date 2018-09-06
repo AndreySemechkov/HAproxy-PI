@@ -29,6 +29,7 @@ struct lb_pi {
     struct eb_root act;	/*  least conns on the active servers */
     struct eb_root bck;	/*  least conns on the backup servers */
     struct eb32_node *last_used_node;
+    FILE* log;	
 };
 
 #endif /* _TYPES_LB_PI_H */

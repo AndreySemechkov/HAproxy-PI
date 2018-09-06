@@ -279,13 +279,15 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
-
+	
+    fprintf(stdout,"\ninside pi_get_next_server\n");
+    fflush(stdout);
     //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
             // add if(last_used_node==deleted_serv) last_used_node = NULL;
                     // check in all code when server dies, do last_used_node =NULL to select here the next best cadidate
 
     srv = avoided = NULL;
-
+	
     HA_SPIN_LOCK(LBPRM_LOCK, &p->lbprm.lock);
     if (p->srv_act)
         node = eb32_first(&p->lbprm.pi.act);
@@ -306,7 +308,9 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
         srv = NULL;
         goto out;
     }
-
+ 	 
+    fprintf(stdout,"\nafter if's p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li\n", p->lbprm.pi.last_used_node, node,srv);
+    fflush(stdout);
     while (node) {
         /*
         OK, we have a server. However, it may be saturated, in which
@@ -333,7 +337,8 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     p->lbprm.pi.last_used_node = &(srv->lb_node);
 
     out:
-    fprintf(stdout, "!!!!!!!!WE ARE HERE!!!!!!");
+    fprintf(stdout,"\nafter  before exit func next_serv p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li\n", p->lbprm.pi.last_used_node, node,srv);
+    fflush(stdout);
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
     return srv;
 }

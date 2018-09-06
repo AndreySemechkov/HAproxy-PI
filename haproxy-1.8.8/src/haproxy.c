@@ -1944,6 +1944,10 @@ static void init(int argc, char **argv)
 
 	if (!global.node)
 		global.node = strdup(hostname);
+	//new
+	//px->lbprm.pi.log = fopen("/home/compm/HAproxy-PI/pi_log_new2","a"); 
+	//fprintf(px->lbprm.pi.log, "HELLO!*******************\n");	
+	//fflush(px->lbprm.pi.log);
 
 	if (!hlua_post_init())
 		exit(1);
@@ -2508,7 +2512,15 @@ int main(int argc, char **argv)
 	struct rlimit limit;
 	char errmsg[100];
 	int pidfd = -1;
-
+/*	
+	FILE* pi_log = NULL;
+	pi_log = fopen("/home/compm/HAproxy-PI/pi_log_new","a");
+	fprintf(pi_log, "HELLO!*******************\n");	
+	fflush(pi_log);
+*/
+	
+	//fprintf(stdout,"HELLO******************************");
+	//fflush(stdout);
 	init(argc, argv);
 	signal_register_fct(SIGQUIT, dump, SIGQUIT);
 	signal_register_fct(SIGUSR1, sig_soft_stop, SIGUSR1);
@@ -3067,8 +3079,9 @@ int main(int argc, char **argv)
 #endif
 
 	/* Do some cleanup */
+	
 	deinit();
-
+	//fclose(pi_log);
 	exit(0);
 }
 

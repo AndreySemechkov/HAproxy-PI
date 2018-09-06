@@ -622,17 +622,16 @@ int assign_server(struct stream *s)
 			break;
 
 		case BE_LB_LKUP_PITREE:
-
-		    //srv->proxy->lbprm.pi.log = fopen("~/HAproxy-PI/pi_log", "a");
-			fprintf(stdout, "!!!!!!!!WE ARE HERE - case BE_LB_LKUP_PITREE:!!!!!!");
+			fprintf(stdout, "!!!!!!!!WE ARE HERE - case BE_LB_LKUP_PITREE:!!!!!!\n");
+			fflush(stdout);
 			srv = pi_get_next_server(s->be, prev_srv);
-
-			if(srv)
+			if(srv){
 				fprintf(stdout, "Started backend: assign_server BE_LB_LKUP_PITREE case\n"
-												"server pointer: %d\n"
-												"num connections of srv: %d\n",
+						"server pointer: %d\n"
+					"num connections of srv: %d\n",
 						srv,srv->cur_sess);
-			srv = pi_get_next_server(s->be, prev_srv);
+				fflush(stdout);			
+			}	
 			break;
 
 		case BE_LB_LKUP_CHTREE:
