@@ -109,7 +109,6 @@ static unsigned int gen_hash(const struct proxy* px, const char* key, unsigned l
 void recount_servers(struct proxy *px)
 {
 	struct server *srv;
-
 	px->srv_act = px->srv_bck = 0;
 	px->lbprm.tot_wact = px->lbprm.tot_wbck = 0;
 	px->lbprm.fbck = NULL;
@@ -130,6 +129,8 @@ void recount_servers(struct proxy *px)
 			px->lbprm.tot_wact += srv->next_eweight;
 		}
 	}
+	fprintf(stdout,"\n***inside recount_servers px->srv_act=%d*****\n",px->srv_act);
+  	fflush(stdout);
 }
 
 /* This function simply updates the backend's tot_weight and tot_used values
@@ -622,11 +623,11 @@ int assign_server(struct stream *s)
 			break;
 
 		case BE_LB_LKUP_PITREE:
-			fprintf(stdout, "!!!!!!!!WE ARE HERE - case BE_LB_LKUP_PITREE:!!!!!!\n");
+			fprintf(stdout, "\n!!!!!!!!WE ARE HERE - case BE_LB_LKUP_PITREE:!!!!!!\n");
 			fflush(stdout);
 			srv = pi_get_next_server(s->be, prev_srv);
 			if(srv){
-				fprintf(stdout, "Started backend: assign_server BE_LB_LKUP_PITREE case\n"
+				fprintf(stdout, "\nStarted backend: assign_server BE_LB_LKUP_PITREE case\n"
 						"server pointer: %d\n"
 					"num connections of srv: %d\n",
 						srv,srv->cur_sess);

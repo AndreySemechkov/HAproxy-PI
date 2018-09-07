@@ -113,10 +113,11 @@ class isPrime:
 		logging.debug("New queue size is: " + str(qin.qsize()))
 		logging.debug('***********************************************************************************')
 		try:
-			res = "This is Usain\n" + str(qout.get(timeout=5))
+			res = "This is Slowpoke\n" + str(qout.get())
+			#while(qout.qsize()):
+			#	res += "This is Usain\n" + str(qout.get())
 		except Queue.Empty, e:
-			res = "The result took too long to calc"
-
+			res = "This is Slowpoke - The result took too long to calc"	
 		return res
 
 
@@ -131,7 +132,7 @@ class get_post2:
 
 	def GET(self):
 
-		return "Now i will try to use the proxy with the numbers generation"
+		return "Hello! I'm Slowpoke, want to be friends?"
 
 	def POST(self):
 

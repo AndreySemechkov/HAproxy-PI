@@ -279,37 +279,37 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
 {
     struct server *srv, *avoided;
     struct eb32_node *node;
-	
-    fprintf(stdout,"\ninside pi_get_next_server\n");
-    fflush(stdout);
-    //TODO: instead static add last_used_node to struct proxy as a new struct pi_metadata for pi logic
-            // add if(last_used_node==deleted_serv) last_used_node = NULL;
-                    // check in all code when server dies, do last_used_node =NULL to select here the next best cadidate
+    //p->srv_act = 2;    //TODO
 
+    fprintf(stdout,"\n***inside pi_get_next_server p->srv_act=%d  p->lbprm.fbck=%d*****\n", p->srv_act, p->lbprm.fbck);
+    fflush(stdout);
     srv = avoided = NULL;
 	
     HA_SPIN_LOCK(LBPRM_LOCK, &p->lbprm.lock);
-    if (p->srv_act)
+    if (p->srv_act){
         node = eb32_first(&p->lbprm.pi.act);
-        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL){
-            node = p->lbprm.pi.last_used_node;
-        }
-    else if (p->lbprm.fbck) {
+        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL)
+            node = p->lbprm.pi.last_used_node; 
+	fprintf(stdout,"\n***inside pi_get_next_server case p->srv_act*****\n");
+   	fflush(stdout); 
+    } else if (p->lbprm.fbck) {
         srv = p->lbprm.fbck;
         p->lbprm.pi.last_used_node = &(srv->lb_node);
+	fprintf(stdout,"\n***inside pi_get_next_server case p->lbprm.fbck*****\n");
+   	fflush(stdout); 
         goto out;
-    }
-    else if (p->srv_bck)
+    } else if (p->srv_bck){
         node = eb32_first(&p->lbprm.pi.bck);
-        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL){
-            node = p->lbprm.pi.last_used_node;
-        }
-    else {
+        if(node && node->key != 0 && p->lbprm.pi.last_used_node != NULL)
+            node = p->lbprm.pi.last_used_node;  
+	fprintf(stdout,"\n***inside pi_get_next_server case p->srv_bck*****\n");
+   	fflush(stdout); 
+    } else {
         srv = NULL;
         goto out;
     }
  	 
-    fprintf(stdout,"\nafter if's p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li\n", p->lbprm.pi.last_used_node, node,srv);
+    fprintf(stdout,"\n****after if's p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li****\n", p->lbprm.pi.last_used_node, node,srv);
     fflush(stdout);
     while (node) {
         /*
@@ -337,7 +337,7 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     p->lbprm.pi.last_used_node = &(srv->lb_node);
 
     out:
-    fprintf(stdout,"\nafter  before exit func next_serv p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li\n", p->lbprm.pi.last_used_node, node,srv);
+    fprintf(stdout,"\n***before exit func next_serv p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li*****\n", p->lbprm.pi.last_used_node, node,srv);
     fflush(stdout);
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
     return srv;
