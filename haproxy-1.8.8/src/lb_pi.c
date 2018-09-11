@@ -335,9 +335,9 @@ struct server *pi_get_next_server(struct proxy *p, struct server *srvtoavoid)
     if (!srv)
         srv = avoided;
     p->lbprm.pi.last_used_node = &(srv->lb_node);
-
+	
     out:
-    fprintf(stdout,"\n***before exit func next_serv p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li*****\n", p->lbprm.pi.last_used_node, node,srv);
+    fprintf(stdout,"\n***before exit func next_serv p->lbprm.pi.last_used_node=%li\nnode=%li\nserver=%li\nsrv->lb_node.key=%li*****\n", p->lbprm.pi.last_used_node, node,srv, srv->lb_node.key);
     fflush(stdout);
     HA_SPIN_UNLOCK(LBPRM_LOCK, &p->lbprm.lock);
     return srv;

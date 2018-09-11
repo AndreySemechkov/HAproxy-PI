@@ -11,7 +11,7 @@ import json
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s', )
 
-currServerName = "Slowpoke"
+currServerName = "UsainBolt"
 
 
 def jsonDefault(OrderedDict):
@@ -98,7 +98,7 @@ def closestPrime():
 
 # we can choose the port number we monitor
 class MyApplication(web.application):
-    def run(self, port=8080, *middleware):
+    def run(self, port=80, *middleware):
         func = self.wsgifunc(*middleware)
         return web.httpserver.runsimple(func, ('0.0.0.0', port))
 
