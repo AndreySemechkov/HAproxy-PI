@@ -45,7 +45,8 @@ def joinAllThreads():
 
 
 def httpGET(randNum):
-    destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
+    # destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
+    destURL = "http://192.168.56.254/isPrime/" + str(randNum)  # defining the api-endpoint
     request = requests.get(destURL)
     return request.text
 

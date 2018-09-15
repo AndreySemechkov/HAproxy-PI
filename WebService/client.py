@@ -38,8 +38,8 @@ def do_something(response):
 
 
 def httpGET(randNum):
-    destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
-    # destURL = "http://192.168.56.254/isPrime/" + str(randNum) # defining the api-endpoint
+    # destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
+    destURL = "http://192.168.56.254/isPrime/" + str(randNum) # defining the api-endpoint
     #    action_item = grequests.get(destURL, hooks = {'response' : do_something})
     action_item = grequests.get(destURL)
     async_list.append(action_item)
