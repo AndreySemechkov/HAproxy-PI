@@ -40,6 +40,7 @@ class Result(object):
         self.numToCalc = reqNum
         self.timeRequestReceived = reqTime
         self.timeFinishedCalc = timeF
+        self.totalHandlingTime = None
 
     def __str__(self):
         if self.numToCalc == -1:
@@ -59,11 +60,12 @@ class Result(object):
     def delay(self):
         return self.timeStartedCalc - self.timeRequestReceived
 
-    def totalTime(self):
-        return self.timeFinishedCalc - self.timeRequestReceived
+    def updateTotalTime(self):
+        self.totalHandlingTime = self.timeFinishedCalc - self.timeRequestReceived
 
 
 load = sys.argv[1]
+port = sys.argv[2]
 qin = Queue.Queue()
 qout = Queue.Queue()
 init = False
@@ -92,13 +94,14 @@ def closestPrime():
             if isPrime:
                 res.timeFinishedCalc = time.time()
                 break
+        res.updateTotalTime()
         qout.put(res)
         logging.debug(res)
 
 
 # we can choose the port number we monitor
 class MyApplication(web.application):
-    def run(self, port=80, *middleware):
+    def run(self, port=int(port), *middleware):
         func = self.wsgifunc(*middleware)
         return web.httpserver.runsimple(func, ('0.0.0.0', port))
 
