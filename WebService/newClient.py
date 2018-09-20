@@ -7,8 +7,8 @@ import json
 import threading
 
 
-NUM_OF_THREADS = 50
-REQ_PER_THREAD = 1000
+NUM_OF_THREADS = 5
+REQ_PER_THREAD = 10
 
 threadsList = []
 response_list = [None] * (NUM_OF_THREADS * REQ_PER_THREAD)
@@ -48,7 +48,7 @@ def httpGET(randNum):
     # destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
     destURL = "http://192.168.56.254/isPrime/" + str(randNum)  # defining the api-endpoint
     request = requests.get(destURL)
-    return request.text
+    return request
 
 
 
@@ -60,15 +60,22 @@ joinAllThreads()
 
 print "*******************"
 
+
 csv = open('t.csv', 'w')
-for key, value in json.loads(response_list[0]).iteritems():
+for key, value in json.loads(response_list[0].text).iteritems():
     csv.write(key + ", ")
+
+errors = 0
 
 for response in response_list:
     csv.write("\n")
-    for key, value in json.loads(response).iteritems():
+    if response.status_code != 200:
+        errors += 1
+        continue
+    for key, value in json.loads(response.text).iteritems():
         csv.write(str(value) + ", ", )
 csv.close()
+print "Total errors: " + str(errors)
 
 
 
