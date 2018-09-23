@@ -11,29 +11,29 @@ import json
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s', )
 
-currServerName = "UsainBolt"
+currServerName = "server"+sys.argv[3]
 
 
 def jsonDefault(OrderedDict):
-    return OrderedDict.__dict__
+    return OrderedDict._dict_
 
 
 class Request(object):
     counter = 1
 
-    def __init__(self, num):
+    def _init_(self, num):
         self.time = time.time()
         self.requestNum = Request.counter
         Request.counter += 1
         self.num = num
 
-    def __str__(self):
+    def _str_(self):
         return str(self.requestNum) + ". Request - " + str(self.num) + "               " + str(self.time)
 
 
 class Result(object):
 
-    def __init__(self, numOfReq, reqTime, reqNum, timeF=None):
+    def _init_(self, numOfReq, reqTime, reqNum, timeF=None):
         self.ServerName = currServerName
         self.timeStartedCalc = time.time()
         self.requestNum = numOfReq
@@ -42,7 +42,7 @@ class Result(object):
         self.timeFinishedCalc = timeF
         self.totalHandlingTime = None
 
-    def __str__(self):
+    def _str_(self):
         if self.numToCalc == -1:
             return "Done!"
         # return str(self.requestNum) + ". Result for num: " + str(self.numToCalc) + \
@@ -76,9 +76,9 @@ def initializeWorker():
     t.start()
 
 
-def closestPrime():
+def closestPrime(req):
     while (True):
-        req = qin.get()
+        #req = qin.get()
         res = Result(req.requestNum, req.time, req.num)
         # -1 indicates EOF
         if req.num == -1:
@@ -95,8 +95,9 @@ def closestPrime():
                 res.timeFinishedCalc = time.time()
                 break
         res.updateTotalTime()
-        qout.put(res)
+        #qout.put(res)
         logging.debug(res)
+	return res
 
 
 # we can choose the port number we monitor
@@ -115,17 +116,18 @@ urls = (
 class isPrime:
 
     def GET(self, num):
-        if not init:
-            initializeWorker()
+        #if not init:
+            #initializeWorker()
         num = int(u'{0}'.format(num))
         req = Request(num)
-        logging.debug('***********************************************************************************')
+        logging.debug('*****************************')
         logging.debug(req)
-        qin.put(req)
+        #qin.put(req)
         logging.debug("New queue size is: " + str(qin.qsize()))
-        logging.debug('***********************************************************************************')
+        logging.debug('*****************************')
         try:
-            res = str(qout.get())
+	    res = str(closestPrime(req))
+            #res = str(qout.get())
             # res = "This is " + currServerName + "\n" + str(qout.get())
         # while(qout.qsize()):
         #	res += "This is Usain\n" + str(qout.get())
@@ -149,6 +151,6 @@ class get_post2:
         print session_args
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     app = MyApplication(urls, globals())
     app.run()
