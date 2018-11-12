@@ -14,18 +14,26 @@ threadsList = []
 response_list = [None] * (NUM_OF_THREADS * REQ_PER_THREAD)
 
 
+"""
+Generates a random number with n digits
+"""
 def genFixedDigitsRand(n):
     range_start = 10 ** (n - 1)
     range_end = (10 ** n) - 1
     return randint(range_start, range_end)
 
-
+"""
+Sends REQ_PER_THREAD requests using httpGET() function. the parameter for each request is a randomly generated number
+When the response received, it is stored in a list for further analysis
+"""
 def myThread(id):
     for i in range(REQ_PER_THREAD):
-        httpGET(genFixedDigitsRand(5))
         response_list[id * REQ_PER_THREAD + i] = httpGET(genFixedDigitsRand(5))
 
 
+"""
+Creates NUM_OF_THREADS threads in the system when each thread is myThread
+"""
 def initializeWorkers():
     print "Creating threads..."
     for t_id in range(NUM_OF_THREADS):
@@ -45,8 +53,10 @@ def joinAllThreads():
         print "Thread #" + str(t_id) + " was joined successfully!"
 
 
+"""
+Sends HTTP get request to "http://192.168.56.254/isPrime/" URL with randNum parameter
+"""
 def httpGET(randNum):
-    # destURL = "http://localhost:8080/isPrime/" + str(randNum)  # defining the api-endpoint
     destURL = "http://192.168.56.254/isPrime/" + str(randNum)  # defining the api-endpoint
     request = requests.get(destURL)
     return request
@@ -68,7 +78,7 @@ for response in response_list:
     if response.status_code != 200:
         errors += 1
 
-fileName = 'PI' + str(sys.argv[1]) + '_T' + str(totalTime) + '_E' + str(errors) + '.csv'
+fileName = str(sys.argv[1]) + '_T' + str(totalTime) + '_E' + str(errors) + '.csv'
 csv = open(fileName, 'w')
 
 for key, value in json.loads(response_list[0].text).iteritems():

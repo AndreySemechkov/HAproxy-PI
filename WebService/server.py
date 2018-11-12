@@ -45,11 +45,6 @@ class Result(object):
     def _str_(self):
         if self.numToCalc == -1:
             return "Done!"
-        # return str(self.requestNum) + ". Result for num: " + str(self.numToCalc) + \
-        # 						 "  Delay: " + str(self.delay()) + \
-        # 						 "  Calc Time: " + str(self.calcTime()) + \
-        # 						 "  Total Time: " + str(self.totalTime()) + \
-        # 						 "         Start: " + str(self.timeStartedCalc) + "     Finish: " + str(self.timeFinishedCalc) + "\n"
         return json.dumps(self, default=jsonDefault, indent=4)
 
     def calcTime(self):
